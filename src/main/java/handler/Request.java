@@ -51,6 +51,14 @@ public class Request {
         return null;
     }
 
+    public List<NameValuePair> getPart(String name) {
+        return null;
+    }
+
+    public List<NameValuePair> getParts() {
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
