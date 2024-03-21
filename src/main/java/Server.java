@@ -123,6 +123,16 @@ public class Server {
                 final var body = new String(bodyBytes);
                 System.out.println(body);
             }
+
+            //Если тип x-www-form-urlencoded
+            final var contentType = extractHeader(headers, "Content-Type");
+            if (contentType.isPresent() && contentType.get().trim().equals("application/x-www-form-urlencoded")) {
+                final var length = Integer.parseInt(contentLength.get());
+                final var bodyBytes = in.readNBytes(length);
+
+                final var body = new String(bodyBytes);
+                System.out.println(body);
+            }
         }
 
         out.write((

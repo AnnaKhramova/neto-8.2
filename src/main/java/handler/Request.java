@@ -43,6 +43,14 @@ public class Request {
         return null;
     }
 
+    public List<NameValuePair> getPostParam(String name) {
+        return null;
+    }
+
+    public List<NameValuePair> getPostParams() {
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
