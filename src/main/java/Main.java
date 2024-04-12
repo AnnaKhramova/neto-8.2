@@ -17,7 +17,7 @@ public class Main {
         server.addHandler("POST", "/messages", new Handler() {
             public void handle(Request request, BufferedOutputStream responseStream) {
                 System.out.println("ѕолучен POST запрос со следующими параметрами: ");
-                request.getPostParams().stream().forEach(p -> System.out.println(p.getName() + "=" + p.getValue()));
+                request.getPostParams().forEach(p -> System.out.println(p.getName() + "=" + p.getValue()));
             }
         });
 
