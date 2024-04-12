@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    final static Integer THREAD_COUNT = 64;
+    final static Integer THREAD_COUNT = 1;
 
     public static final String GET = "GET";
     public static final String POST = "POST";
@@ -88,10 +88,6 @@ public class Server {
         System.out.println(path);
 
         Request request = new Request(requestLine[0], path);
-        if (handlers.containsKey(request)) {
-            Handler handler = handlers.get(request);
-            handler.handle(request, out);
-        }
 
         // ищем заголовки
         final var headersDelimiter = new byte[]{'\r', '\n', '\r', '\n'};
@@ -109,6 +105,7 @@ public class Server {
 
         final var headersBytes = in.readNBytes(headersEnd - headersStart);
         final var headers = Arrays.asList(new String(headersBytes).split("\r\n"));
+        request.setHeaders(headers);
         System.out.println(headers);
 
         // для GET тела нет
@@ -121,6 +118,7 @@ public class Server {
                 final var bodyBytes = in.readNBytes(length);
 
                 final var body = new String(bodyBytes);
+                request.setBody(body);
                 System.out.println(body);
             }
 
@@ -131,6 +129,7 @@ public class Server {
                 final var bodyBytes = in.readNBytes(length);
 
                 final var body = new String(bodyBytes);
+                request.setBody(body);
                 System.out.println(body);
             }
 
@@ -142,6 +141,11 @@ public class Server {
                 final var body = new String(bodyBytes);
                 System.out.println(body);
             }
+        }
+
+        if (handlers.containsKey(request)) {
+            Handler handler = handlers.get(request);
+            handler.handle(request, out);
         }
 
         out.write((

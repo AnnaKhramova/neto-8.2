@@ -1,9 +1,12 @@
 package handler;
 
 import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +14,8 @@ public class Request {
     String method;
     String path;
     String cleanPath;
+    List<String> headers;
+    String body;
 
     public Request(String method, String path) {
         this.method = method;
@@ -21,6 +26,16 @@ public class Request {
         } else {
             this.cleanPath = path;
         }
+        this.headers = null;
+        this.body = null;
+    }
+
+    public void setHeaders(List<String> headers) {
+        this.headers = headers;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public List<NameValuePair> getQueryParam(String name) {
@@ -44,11 +59,18 @@ public class Request {
     }
 
     public List<NameValuePair> getPostParam(String name) {
-        return null;
+        var params = getPostParams();
+        return params.stream().filter(p -> p.getName().equals(name)).toList();
     }
 
     public List<NameValuePair> getPostParams() {
-        return null;
+        var params = new ArrayList<NameValuePair>();
+        final var stringParams = Arrays.asList(body.split("&"));
+        for (String stringParam : stringParams) {
+            String[] keyValue = stringParam.split("=");
+            params.add(new BasicNameValuePair(keyValue[0], keyValue[1]));
+        }
+        return params;
     }
 
     public List<NameValuePair> getPart(String name) {
