@@ -11,13 +11,13 @@ public class Main {
         server.addHandler("GET", "/messages", new Handler() {
             public void handle(Request request, BufferedOutputStream responseStream) {
                 System.out.println("ѕолучен GET запрос со следующими параметрами: ");
-                request.getQueryParams().stream().forEach(System.out::println);
+                request.getQueryParams().stream().forEach(p -> System.out.println(p.getName() + "=" + p.getValue()));
             }
         });
         server.addHandler("POST", "/messages", new Handler() {
             public void handle(Request request, BufferedOutputStream responseStream) {
                 System.out.println("ѕолучен POST запрос со следующими параметрами: ");
-                request.getQueryParams().stream().forEach(System.out::println);
+                request.getPostParams().forEach(p -> System.out.println(p.getName() + "=" + p.getValue()));
             }
         });
 
