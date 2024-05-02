@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    final static Integer THREAD_COUNT = 64;
+    final static Integer THREAD_COUNT = 4;
 
     public static final String GET = "GET";
     public static final String POST = "POST";

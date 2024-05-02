@@ -12,6 +12,8 @@ public class Request {
     String path;
     String cleanPath;
 
+    List<NameValuePair> queryParams;
+
     public Request(String method, String path) {
         this.method = method;
         this.path = path;
@@ -21,26 +23,20 @@ public class Request {
         } else {
             this.cleanPath = path;
         }
+        try {
+            var builder = new URIBuilder(path);
+            queryParams = builder.getQueryParams();
+        } catch (URISyntaxException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public List<NameValuePair> getQueryParam(String name) {
-        try {
-            var builder = new URIBuilder(path);
-            return builder.getQueryParams().stream().filter(p -> p.getName().equals(name)).toList();
-        } catch (URISyntaxException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return queryParams.stream().filter(p -> p.getName().equals(name)).toList();
     }
 
     public List<NameValuePair> getQueryParams() {
-        try {
-            var builder = new URIBuilder(path);
-            return builder.getQueryParams();
-        } catch (URISyntaxException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return queryParams;
     }
 
     @Override
